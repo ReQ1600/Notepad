@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name" translatable="false">NotepadProject</string>
+    <string name="menu_notes">Notes</string>
+    <string name="menu_scan">Scan a note</string>
+    <string name="menu">Main Menu</string>
+    <string name="note_add">add note</string>
+    <string name="note_edit">edit note</string>
+    <string name="close">close</string>
+    <string name="note_title">Title</string>
+    <string name="note_contents">Content</string>
+    <string name="note_confirm">Confirm</string>
+    <string name="note_delete">Delete</string>
+    <string name="scan">Scan</string>
+    <string name="scan_add">Add a note</string>
+    <string name="scan_no_access">No camera access. Allow camera access in phone settings.</string>
+</resources>

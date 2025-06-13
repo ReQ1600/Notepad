@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_notes">Notatki</string>
+    <string name="menu_scan">Skanuj notatkę</string>
+    <string name="menu">Menu Główne</string>
+    <string name="note_add">dodaj notatkę</string>
+    <string name="note_edit">edytuj notatkę</string>
+    <string name="close">zamknij</string>
+    <string name="note_title">Nazwa</string>
+    <string name="note_contents">Zawartość</string>
+    <string name="note_confirm">Zatwierdź</string>
+    <string name="note_delete">Usuń</string>
+    <string name="scan">Skanuj</string>
+    <string name="scan_add">Dodaj notatkę</string>
+    <string name="scan_no_access">Brak dostępu do kamery. Zezwól na używanie kamery w ustawieniach telefonu.</string>
+</resources>
