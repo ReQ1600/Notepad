@@ -22,6 +22,7 @@ import com.dudziak.notatnik.ui.theme.NotepadProjectTheme
 import com.dudziak.notatnik.viewModel.NoteViewModel
 import com.dudziak.notatnik.viewModel.NoteViewModelFactory
 import com.dudziak.notatnik.database.NoteDatabase
+import com.dudziak.notatnik.ui.screen.AddScanScreen
 import com.dudziak.notatnik.ui.screen.NoteScannerScreen
 import com.dudziak.notatnik.ui.screen.NoteVoodooScreen
 import com.dudziak.notatnik.ui.screen.NotesScreen
@@ -58,6 +59,7 @@ fun NotepadApp(modifier: Modifier = Modifier) {
         composable("notes") { NotesScreen(navController =  navController, viewModel = viewModel) }
         composable("noteVoodoo") { NoteVoodooScreen(navController = navController, noteViewModel = viewModel)}
         composable("scan") { NoteScannerScreen(navController = navController) }
+        composable("addScan") { AddScanScreen(navController = navController, noteViewModel = viewModel) }
     }
 }
 

@@ -1,7 +1,6 @@
 package com.dudziak.notatnik.viewModel
 
 import android.app.Application
-import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.camera.core.ImageCapture
@@ -13,12 +12,13 @@ import com.google.mlkit.vision.common.InputImage
 import java.io.File
 import androidx.camera.core.ImageCaptureException
 import com.google.mlkit.vision.text.TextRecognition
-import androidx.compose.runtime.mutableStateOf
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
 class NoteScannerViewModel(application: Application) : AndroidViewModel(application) {
-    private val _content = mutableStateOf<String?>(null)
-    val content: State<String?> = _content
+    companion object {
+        private val _content = mutableStateOf<String?>(null)
+        val content: State<String?> = _content
+    }
 
     private val _context = application.applicationContext
     private val _outputDir = _context.cacheDir
@@ -63,5 +63,4 @@ class NoteScannerViewModel(application: Application) : AndroidViewModel(applicat
                 Log.e("OCR", "OCR error", it)
             }
     }
-
 }

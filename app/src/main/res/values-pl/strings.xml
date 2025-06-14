@@ -13,4 +13,6 @@
     <string name="scan">Skanuj</string>
     <string name="scan_add">Dodaj notatkę</string>
     <string name="scan_no_access">Brak dostępu do kamery. Zezwól na używanie kamery w ustawieniach telefonu.</string>
+    <string name="note_added">dodano notatkę</string>
+    <string name="scan_lookup">podgląd</string>
 </resources>

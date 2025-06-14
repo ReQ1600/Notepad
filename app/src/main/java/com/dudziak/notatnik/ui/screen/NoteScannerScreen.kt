@@ -1,6 +1,5 @@
 package com.dudziak.notatnik.ui.screen
 
-import android.net.Uri
 import android.widget.Toast
 
 import androidx.camera.core.CameraSelector
@@ -21,11 +20,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.dudziak.notatnik.R
 import com.dudziak.notatnik.viewModel.NoteScannerViewModel
+import com.dudziak.notatnik.viewModel.NoteViewModel
 import com.google.accompanist.permissions.*
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
@@ -37,7 +36,7 @@ fun NoteScannerScreen(navController: NavController, viewModel: NoteScannerViewMo
     val previewView = remember { PreviewView(context) }
 
     val cameraPermissionState = rememberPermissionState(android.Manifest.permission.CAMERA)
-    val content by viewModel.content
+    val content by NoteScannerViewModel.content
 
     val scrollState = rememberScrollState()
 
@@ -95,12 +94,10 @@ fun NoteScannerScreen(navController: NavController, viewModel: NoteScannerViewMo
 
                 Button(
                     onClick = {
-                        content?.let { txt ->
-                            //navController.navigate("addReceipt")
-                        }
+                        content?.let { navController.navigate("addScan") }
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = content != null
+                    enabled = (content != null && content != "")
                 ) {
                     Text(stringResource(R.string.scan_add))
                 }
@@ -110,8 +107,9 @@ fun NoteScannerScreen(navController: NavController, viewModel: NoteScannerViewMo
 
 
                 OutlinedTextField(
-                    value = content.toString(),
+                    value = content ?: "",
                     onValueChange = {  },
+                    readOnly = true,
                     label = { Text(stringResource(R.string.note_contents)) },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -120,7 +118,6 @@ fun NoteScannerScreen(navController: NavController, viewModel: NoteScannerViewMo
                     maxLines = Int.MAX_VALUE,
                     singleLine = false
                 )
-                //Text("${stringResource(R.string.rec_amnt)}: ${amount ?: stringResource(R.string.rec_not_found)}", style = MaterialTheme.typography.bodyLarge)
             }
         } else {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center)
@@ -136,63 +133,70 @@ fun NoteScannerScreen(navController: NavController, viewModel: NoteScannerViewMo
     }
 }
 
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun AddReceiptScreen(navController: NavController, viewModel: ReceiptViewModel = viewModel(), transactionViewModel: TransactionViewModel, amnt: String) {
-//    var amount by remember { mutableStateOf(amnt) }
-//    var description by remember { mutableStateOf("") }
-//    val context = LocalContext.current
-//    val rec_added = stringResource(R.string.rec_added)
-//
-//    Scaffold(
-//        topBar = {
-//            TopAppBar(
-//                title = { Text(stringResource(R.string.add_trans)) },
-//                navigationIcon = {
-//                    IconButton(onClick = {
-//                        navController.popBackStack("scanner", inclusive = false)
-//                    }) {
-//                        Icon(Icons.Default.Close, contentDescription = stringResource(R.string.trans_screen_close))
-//                    }
-//                }
-//            )
-//        }
-//    ) { padding ->
-//        Column(modifier = Modifier
-//            .padding(padding)
-//            .padding(16.dp)) {
-//            OutlinedTextField(
-//                value = amount,
-//                onValueChange = { amount = it },
-//                label = { Text(stringResource(R.string.trans_amnt)) },
-//                modifier = Modifier.fillMaxWidth()
-//            )
-//
-//            Spacer(modifier = Modifier.height(8.dp))
-//
-//            OutlinedTextField(
-//                value = description,
-//                onValueChange = { description = it },
-//                label = { Text(stringResource(R.string.trans_desc)) },
-//                modifier = Modifier.fillMaxWidth()
-//            )
-//
-//            Spacer(modifier = Modifier.height(16.dp))
-//
-//            Row {
-//                Button(onClick = {
-//                    transactionViewModel.addTransaction(
-//                        amount = amount.toDoubleOrNull() ?: 0.0,
-//                        type = TransactionType.EXPENSE,
-//                        description = description.ifBlank { null }
-//                    )
-//                    Toast.makeText(context, rec_added, Toast.LENGTH_SHORT).show()
-//                    navController.popBackStack("scanner", inclusive = false)
-//                },
-//                    modifier = Modifier.fillMaxWidth()) {
-//                    Text(stringResource(R.string.add_expense))
-//                }
-//            }
-//        }
-//    }
-//}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AddScanScreen(navController: NavController, noteViewModel: NoteViewModel, scannerViewModel: NoteScannerViewModel = viewModel()) {
+    var title by remember { mutableStateOf("") }
+    var content by remember { mutableStateOf(NoteScannerViewModel.content.value.toString()) }
+    val context = LocalContext.current
+    val noteAdded = stringResource(R.string.note_added)
+
+    val scrollState = rememberScrollState()
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.scan_add)) },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navController.popBackStack("scan", inclusive = false)
+                    }) {
+                        Icon(Icons.Default.Close, contentDescription = stringResource(R.string.close))
+                    }
+                }
+            )
+        }
+    ) { padding ->
+        Column(modifier = Modifier
+            .padding(padding)
+            .padding(16.dp)) {
+            OutlinedTextField(
+                value = title,
+                onValueChange = { title = it },
+                label = { Text(stringResource(R.string.note_title)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = content,
+                onValueChange = { content = it },
+                label = { Text(stringResource(R.string.note_contents)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.5f)
+                    .verticalScroll(scrollState),
+                maxLines = Int.MAX_VALUE,
+                singleLine = false
+            )
+
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row {
+                Button(onClick = {
+                    noteViewModel.addNote(
+                        title = title.ifBlank { "untitled" },
+                        content = content.ifBlank { "" }
+                    )
+                    Toast.makeText(context, noteAdded, Toast.LENGTH_SHORT).show()
+                    navController.popBackStack("scan", inclusive = false)
+                },
+                    modifier = Modifier.fillMaxWidth()) {
+                    Text(stringResource(R.string.scan_add))
+                }
+            }
+        }
+    }
+}

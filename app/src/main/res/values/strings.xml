@@ -13,4 +13,6 @@
     <string name="scan">Scan</string>
     <string name="scan_add">Add a note</string>
     <string name="scan_no_access">No camera access. Allow camera access in phone settings.</string>
+    <string name="note_added">the note has been added</string>
+    <string name="scan_lookup">lookup</string>
 </resources>
